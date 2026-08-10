@@ -2,11 +2,11 @@ import express from "express"
 import { userController } from "./user.controller.ts"
 
 
-const router = express.Router();
+export const userRouter = express.Router();
 
 
-router.get("/users", userController.getAllUsers);
-router.get("/user/:id", userController.getUserById);
-router.post("/user", userController.createUser);
-router.patch("/user/:id", userController.updateUserInfo);
-router.delete("/user/:id", userController.deleteUser);
+userRouter.get("/", userController.getAllUsers);
+userRouter.get("/:id", userController.getUserById);
+userRouter.post("/", userController.createUser);
+userRouter.patch("/:id", userController.updateUserInfo);
+userRouter.delete("/:id", userController.deleteUser);
