@@ -5,14 +5,19 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
-    generatedFileExtension = "js"
+  output   = "../generated/prisma/"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+
+model Admin {
+  id       String @id @default(cuid())
+  login    String  @unique
+  password String
+}
 
 
 model User {
