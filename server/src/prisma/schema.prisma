@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma/"
@@ -12,58 +10,162 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model Admin {
-  id       String @id @default(cuid())
-  login    String  @unique
+  id           String @id @default(cuid())
+  login        String @unique
   password String
 }
-
 
 model User {
   id String @id @default(cuid())
 
   // Personal information
-  name                 String
-  patronymic           String
-  surname              String
-  nameInDativeCase     String
-  surnameInDativeCase  String
-  patronymicInDativeCase String
+  photo                  String?
+  name                   String
+  patronymic             String?
+  surname                String
+  nameInDativeCase       String?
+  surnameInDativeCase    String?
+  patronymicInDativeCase String?
 
   // Passport information
-  passportSeries       String
-  passportNumber       String @unique
-  departmentCode       String
-  passportDateOfIssue  DateTime
-  dateOfBirth          DateTime
-  passportDepartment   String
-  citizenship          String
+  passportSeries      String
+  passportNumber      String   @unique
+  departmentCode      String
+  passportDateOfIssue DateTime
+  dateOfBirth         DateTime
+  passportDepartment  String
+  citizenship         String?
 
   // Place of birth
-  placeOfBirth         String
-  municipalFormation   String
-  populatedArea        String
+  placeOfBirth       String?
+  municipalFormation String?
+  populatedArea      String?
 
   // Place of service
-  serviceRegion        String
-  serviceLicenseNumber String
-  serviceDateOfIssue   DateTime
-  serviceExpirationDate DateTime
-  serviceCategory      String
-  goNumber             String
-  phoneNumber          String
-  email                String
+  serviceRegion          String
+  serviceLicenseNumber   String?
+  serviceDateOfIssue     DateTime?
+  serviceExpirationDate  DateTime?
+  serviceCategory        String
+  certificateNumber      String?
+  goType                 String?
+  phoneNumber            String
+  email                  String
 
   // Address
-  federalSubject       String
-  city                 String
-  locality             String
-  street               String
-  houseNumber          String
-  building             String
-  structure            String
-  apartment            String
+  federalSubject String
+  city           String
+  locality       String
+  street         String
+  houseNumber    String
+  building       String?
+  structure      String?
+  apartment      String?
 
-  // Relations — пока добавим позже
+  // Relations
+  clientTests          ClientTest[]
+  protocolParticipants ProtocolParticipant[]
+}
+
+model ClientTest {
+  id              String   @id @default(cuid())
+  userId          String
+  category        String
+  date            DateTime
+  theoryTest      Boolean
+  exercise1       Boolean
+  exercise2       Boolean
+  exercise3       Boolean
+  result          Boolean
+  typeOfCheck     String
+  allowedMistakes Int
+
+  // Relations
+  user     User          @relation(fields: [userId], references: [id])
+  attempt TestAttempt?
+
+  @@index([userId])
+}
+
+model TestAttempt {
+  id           String   @id @default(cuid())
+  clientTestId String @unique
+  startedAt    DateTime
+  finishedAt   DateTime?
+  mistakes     Int
+  passed       Boolean
+
+  // Relations
+  clientTest ClientTest   @relation(fields: [clientTestId], references: [id])
+  answers    TestAnswer[]
+
+  @@index([clientTestId])
+}
+
+model TestAnswer {
+  id                   String  @id @default(cuid())
+  testAttemptId        String
+  questionId           String
+  selectedVariantIndex Int
+  isCorrect            Boolean
+
+  // Relations
+  testAttempt TestAttempt @relation(fields: [testAttemptId], references: [id])
+  question    Question    @relation(fields: [questionId], references: [id])
+
+  // One answer per question within one attempt
+  @@unique([testAttemptId, questionId])
+
+  @@index([testAttemptId])
+  @@index([questionId])
+}
+
+model Question {
+  id                  String @id @default(cuid())
+  questionText        String
+  variant1            String
+  variant2            String
+  variant3            String
+  correctVariantIndex Int
+  questionsPoolId     String
+
+  // Relations
+  questionsPool QuestionsPool @relation(fields: [questionsPoolId], references: [id])
+  answers TestAnswer[]
+}
+
+
+model QuestionsPool {
+  id                   String @id @default(cuid())
+
+  //Relations
+  questions            Question[]
+  
+}
+
+
+model Protocol {
+  id          String   @id @default(cuid())
+  date        DateTime
+  typeOfCheck String
+
+  // Relations
+  participants ProtocolParticipant[]
+}
+
+model ProtocolParticipant {
+  id             String   @id @default(cuid())
+  protocolId     String
+  userId         String
+  date           DateTime
+  theoryResult   Boolean
+  practiceResult Boolean
+
+  // Relations
+  protocol Protocol @relation(fields: [protocolId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@index([protocolId])
+  @@index([userId])
 }

@@ -8,7 +8,8 @@ export const userController = {
       const users = await prisma.user.findMany();
       res.json(users);
     }
-    catch {
+    catch (error) {
+      console.error(error)
       res.status(500).json({ error: "Failed to get user" })
     }
   },
@@ -51,9 +52,10 @@ export const userController = {
         data: req.body,
       })
 
-      return res.status(201).json({ user })
+      return res.status(200).json({ user })
     }
     catch (error) {
+
       return res.status(500).json({ error: "Internal server error" })
     }
   },
@@ -64,7 +66,7 @@ export const userController = {
       const deletedUser = await prisma.user.delete({
         where: { id: String(id) }
       });
-      return res.status(201).send({
+      return res.status(200).send({
         message: "User has beed deleted",
         user: deletedUser
       })
