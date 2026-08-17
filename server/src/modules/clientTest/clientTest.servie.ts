@@ -3,14 +3,21 @@ import type { Prisma } from "../../generated/prisma/client.ts"
 
 
 export const findAllClientTest = async () => {
-  const questions = await prisma.clientTest.findMany()
+  const questions = await prisma.clientTest.findMany({
+    include: {
+      attempt: true
+    }
+  })
 
   return questions
 }
 
 export const findByIdClientTest = async (id: string) => {
   const clientTest = await prisma.clientTest.findUnique({
-    where: { id }
+    where: { id },
+    include: {
+      attempt: true
+    }
   })
 
   return clientTest
