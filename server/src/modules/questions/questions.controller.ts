@@ -1,78 +1,43 @@
-import { prisma } from "../../config/prisma.ts"
-import { json, type Request, type Response } from "express"
-
-
-export const questionsController = {
-
-  getAllQuestions: async (_req: Request, res: Response) => {
-    try {
-      const questions = await prisma.question.findMany();
-      res.status(200).json(questions);
-    } catch (error) {
-      console.error("Error fetching questions:", error);
-      res.status(500).json({ error: "Internal server error" })
-    }
-  },
-
-  getQuestionById: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const question = await prisma.question.findUnique({
-        where: { id: String(id) }
-      });
-      res.status(200).json(question);
-      if (!question) {
-        return res.status(404).json({ error: "Question not found" });
-      }
-
-      res.status(200).json(question);
-    } catch (error) {
-      console.error("Error fetching question:", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  },
+import type { Request, Response } from "express"
+import { create, findAll, findById, remove, update } from "./questions.service.ts"
 
 
 
-  fillQuestions: async (req: Request, res: Response) => {
-    try {
-      const questions = await prisma.question.create({
-        data: req.body.items
-      })
+export const getQuestions = async (req: Request, res: Response) => {
+  const result = await findAll()
 
-      res.status(201).json(questions)
-    }
-    catch (error) {
-      console.error(error);
+  res.status(200).json(result)
+}
 
-      res.status(500).json({ error: "Internal server error" });
-    }
-  },
+export const getQuestion = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-  deleteQuestions: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      await prisma.question.delete({
-        where: { id: String(id) }
-      })
-      res.status(200).json({ result: `User ${id} has been deleted` })
-    }
-    catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server connection" })
-    }
-  },
+  const result = await findById(String(id))
 
-  updateQuestions: async (req: Request, res: Response) => {
-    try {
-      const question = await prisma.question.updateMany({
-        data: req.body
-      })
-      return res.status(201).json(question)
-    }
-    catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server connection" })
-    }
-  }
+  res.status(200).json(result)
+}
+
+export const fillQuestions = async (req: Request, res: Response) => {
+  const { data } = req.body;
+
+  const result = await create(data);
+
+  res.status(201).json(result)
+}
+
+export const removeQuestion = (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = remove(String(id))
+
+  res.status(204).json(result)
+}
+
+export const updateQuestion = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { data } = req.body;
+
+  const result = update(String(id), data);
+
+  res.status(200).json(result)
 }
