@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
 import { register, login, deleteAdmin, updatePassword } from "./auth.service.ts";
 
-export const LoginController = async (req: Request, res: Response) => {
+export const loginController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const result = await login({ email, password })
@@ -10,7 +10,7 @@ export const LoginController = async (req: Request, res: Response) => {
 }
 
 
-export const RegisterController = async (req: Request, res: Response) => {
+export const registerController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const result = await register({ email, password })
@@ -19,7 +19,7 @@ export const RegisterController = async (req: Request, res: Response) => {
 }
 
 
-export const DeleteController = async (req: Request, res: Response) => {
+export const deleteController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const admin = await deleteAdmin(String(id));
@@ -28,7 +28,7 @@ export const DeleteController = async (req: Request, res: Response) => {
 }
 
 
-export const UpdatePassword = async (req: Request, res: Response) => {
+export const updatePasswordController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { password, confirmPassword } = req.body;
 

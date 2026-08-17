@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { DeleteController, LoginController, RegisterController, UpdatePassword } from "./auth.controller.ts";
+import { deleteController, loginController, registerController, updatePasswordController } from "./auth.controller.ts";
 
 
 export const authRouter = Router();
 
-authRouter.post("/login", LoginController);
-authRouter.post("/register", RegisterController);
+authRouter.post("/login", loginController);
+authRouter.post("/register", registerController);
 
-authRouter.delete("/delete-profile/:id", DeleteController)
-authRouter.put("/reset-password/:id", UpdatePassword)
+authRouter.delete("/delete-profile/:id", deleteController)
+authRouter.put("/reset-password/:id", updatePasswordController)
