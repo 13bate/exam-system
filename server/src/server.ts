@@ -5,6 +5,7 @@ import { questionsRouter } from './modules/questions/questions.route.ts';
 import { authRouter } from './modules/auth/auth.route.ts';
 import { authMiddleware } from './middlewares/auth.middlewares.ts';
 import { errorMiddleware } from './middlewares/error.middleware.ts';
+import { clientTestRouter } from './modules/clientTest/clientTest.route.ts';
 
 const app: Express = express();
 
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use("/users", authMiddleware, userRouter)
 app.use("/question", authMiddleware, questionsRouter)
 app.use("/auth", authRouter)
-
+app.use("/client-test", clientTestRouter)
 
 app.use(errorMiddleware)
 

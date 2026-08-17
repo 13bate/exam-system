@@ -32,7 +32,7 @@ export const updateUserController = async (req: Request, res: Response) => {
 
   const user = await update(String(id), req.body);
 
-  res.status(200).json({ user });
+  res.status(200).json(user);
 };
 
 export const deleteUserController = async (req: Request, res: Response) => {
