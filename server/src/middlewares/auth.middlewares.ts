@@ -21,7 +21,7 @@ export const authMiddleware = ((req: Request, res: Response, next: NextFunction)
   jwt.verify(token, env.JWT_SECRET, async (err, decodedPayload) => {
     if (err) {
       console.log(err.message)
-      throw new AppError("Access Denied: You do not have the required permissions or roles.", 403)
+      return next(new AppError("Access Denied: You do not have the required permissions or roles.", 403))
     };
 
     const payload = decodedPayload as JwtPayload;
