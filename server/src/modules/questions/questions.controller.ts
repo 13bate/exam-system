@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.ts"
-import type { Request, Response } from "express"
+import { json, type Request, type Response } from "express"
 
 
 export const questionsController = {
@@ -20,7 +20,7 @@ export const questionsController = {
       const question = await prisma.question.findUnique({
         where: { id: String(id) }
       });
-
+      res.status(200).json(question);
       if (!question) {
         return res.status(404).json({ error: "Question not found" });
       }
