@@ -1,43 +1,43 @@
 import type { Request, Response } from "express"
-import { create, findAll, findById, remove, update } from "./questions.service.ts"
+import { createQuestion, findAllQuestion, findByIdQuestion, deleteQuestion, updateQuestion } from "./questions.service.ts"
 
 
 
-export const getQuestions = async (req: Request, res: Response) => {
-  const result = await findAll()
+export const getAllQuestionsController = async (req: Request, res: Response) => {
+  const result = await findAllQuestion()
 
   res.status(200).json(result)
 }
 
-export const getQuestion = async (req: Request, res: Response) => {
+export const getQuestionByIdController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const result = await findById(String(id))
+  const result = await findByIdQuestion(String(id))
 
   res.status(200).json(result)
 }
 
-export const fillQuestions = async (req: Request, res: Response) => {
+export const createQuestionController = async (req: Request, res: Response) => {
   const { data } = req.body;
 
-  const result = await create(data);
+  const result = await createQuestion(data);
 
   res.status(201).json(result)
 }
 
-export const removeQuestion = (req: Request, res: Response) => {
+export const delteQuestionController = (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const result = remove(String(id))
+  const result = deleteQuestion(String(id))
 
   res.status(204).json(result)
 }
 
-export const updateQuestion = (req: Request, res: Response) => {
+export const updateQuestionController = (req: Request, res: Response) => {
   const { id } = req.params;
   const { data } = req.body;
 
-  const result = update(String(id), data);
+  const result = updateQuestion(String(id), data);
 
   res.status(200).json(result)
 }

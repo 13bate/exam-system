@@ -1,12 +1,13 @@
 import express from "express"
-import { fillQuestions, getQuestion, getQuestions, removeQuestion, updateQuestion } from "./questions.controller.ts";
+import { createQuestionController, delteQuestionController, getAllQuestionsController, getQuestionByIdController, updateQuestionController } from "./questions.controller.ts";
+
 
 
 
 export const questionsRouter = express.Router()
 
-questionsRouter.get("/", getQuestions);
-questionsRouter.get("/:id", getQuestion);
-questionsRouter.post("/", fillQuestions);
-questionsRouter.delete("/:id", removeQuestion);
-questionsRouter.put("/", updateQuestion)
+questionsRouter.get("/", getAllQuestionsController);
+questionsRouter.get("/:id", getQuestionByIdController);
+questionsRouter.post("/", createQuestionController);
+questionsRouter.delete("/:id", delteQuestionController);
+questionsRouter.put("/", updateQuestionController)
