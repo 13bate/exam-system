@@ -1,77 +1,44 @@
-import { prisma } from "../../config/prisma.ts"
-import type { Request, Response } from "express"
+import type { Request, Response } from "express";
+import {
+  findAll,
+  findById,
+  create,
+  update,
+  deleteUser,
+} from "./user.service.ts";
 
-export const userController = {
+export const getAllUsersController = async (req: Request, res: Response) => {
+  const users = await findAll();
 
-  getAllUsers: async (req: Request, res: Response) => {
-    try {
-      const users = await prisma.user.findMany();
-      res.status(200).json(users)
-    }
-    catch (error) {
-      console.error(error)
-      res.status(500).json({ error: "Failed to get user" })
-    }
-  },
-
-  getUserById: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const user = await prisma.user.findUnique({
-        where: {
-          id: String(id),
-        }
-      })
-      if (!user) {
-        return res.status(404).json({ message: "User not found" })
-      }
-      res.status(200).json(user);
-    }
-    catch (error) {
-      return res.status(500).json({ error: "Internal server error", })
-    }
-  },
-
-  createUser: async (req: Request, res: Response) => {
-    try {
-      const user = await prisma.user.create({
-        data: req.body
-      })
-      return res.status(201).json(user);
-    }
-    catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Internal server error", })
-    }
-  },
-
-  updateUserInfo: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const user = await prisma.user.update({
-        where: { id: String(id) },
-        data: req.body,
-      })
-
-      return res.status(200).json({ user })
-    }
-    catch (error) {
-
-      return res.status(500).json({ error: "Internal server error" })
-    }
-  },
-
-  deleteUser: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      await prisma.user.delete({
-        where: { id: String(id) }
-      });
-      return res.status(204)
-    }
-    catch (error) {
-      return res.status(500).json({ error: "Internal server error" })
-    }
-  }
-
+  res.status(200).json(users)
 }
+
+export const getUserByIdController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const user = await findById(String(id));
+
+  res.status(200).json(user);
+};
+
+export const createUserController = async (req: Request, res: Response) => {
+  const user = await create(req.body);
+
+  res.status(201).json(user);
+};
+
+export const updateUserController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const user = await update(String(id), req.body);
+
+  res.status(200).json({ user });
+};
+
+export const deleteUserController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const deletedUser = await deleteUser(String(id));
+
+  res.status(204).json(deletedUser)
+};
