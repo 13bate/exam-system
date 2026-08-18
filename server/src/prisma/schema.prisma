@@ -83,7 +83,7 @@ model ClientTest {
 
   // Relations
   user     User          @relation(fields: [userId], references: [id])
-  attempt TestAttempt ?
+  attempt TestAttempt?
 
   @@index([userId])
 }
@@ -91,28 +91,29 @@ model ClientTest {
 model TestAttempt {
   id           String   @id @default(cuid())
   clientTestId String   @unique
-  startedAt    DateTime @default(now())
+  startedAt    DateTime
+  finishedAt   DateTime?
   mistakes     Int
   passed       Boolean
 
   // Relations
-  clientTest ClientTest   @relation(fields: [clientTestId], references: [id])
+  clientTest ClientTest?   @relation(fields: [clientTestId], references: [id])
   answers    TestAnswer[]
 
   @@index([clientTestId])
 }
 
 model TestAnswer {
-  id                   String  @id @default(cuid())
+  id                   String         @id @default(cuid())
   testAttemptId        String
   questionId           String
   selectedVariantIndex Int
   isCorrect            Boolean
-
+  questionOptionId     String
   // Relations
-  testAttempt TestAttempt @relation(fields: [testAttemptId], references: [id])
-  question    Question    @relation(fields: [questionId], references: [id])
-
+  testAttempt          TestAttempt    @relation(fields: [testAttemptId], references: [id])
+  question             Question       @relation(fields: [questionId], references: [id])
+  questionOption       QuestionOption @relation(fields: [questionOptionId], references:[id])
   // One answer per question within one attempt
   @@unique([testAttemptId, questionId])
 
@@ -123,15 +124,24 @@ model TestAnswer {
 model Question {
   id                  String @id @default(cuid())
   questionText        String
-  variant1            String
-  variant2            String
-  variant3            String
-  correctVariantIndex Int
   questionsPoolId     String
-
   // Relations
-  questionsPool QuestionsPool @relation(fields: [questionsPoolId], references: [id])
-  answers TestAnswer[]
+  questionsPool       QuestionsPool  @relation(fields: [questionsPoolId], references: [id])
+  questionOptions     QuestionOption[]
+  testAnswer          TestAnswer[]
+
+}
+
+model QuestionOption {
+  id                  String @id @default(cuid())
+  text                String 
+  isCorrect           Boolean
+  questionId          String
+  index               Int
+
+  //Relations
+  question            Question @relation(fields: [questionId], references: [id])
+  TestAnswer          TestAnswer[]
 }
 
 

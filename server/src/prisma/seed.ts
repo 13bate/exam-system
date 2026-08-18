@@ -1,36 +1,46 @@
-import { prisma } from "../config/prisma.ts"
-import { questions } from "../prisma-data/questions.ts"
-
+import { prisma } from '../config/prisma.ts'
+import { questions } from '../prisma-data/questions.ts'
+import { questionsOptions } from "../prisma-data/questionOptions.ts"
 const seed = async () => {
+	await prisma.questionsPool.upsert({
+		where: {
+			id: 'main-pool',
+		},
+		update: {},
+		create: {
+			id: 'main-pool',
+		},
+	});
 
+	for (const question of questions) {
+		await prisma.question.upsert({
+			where: {
+				id: question.id,
+			},
+			update: {},
+			create: {
+				id: question.id,
+				questionText: question.questionText,
+				questionsPoolId: question.questionsPoolId
+			}
+		})
+	};
 
-  await prisma.questionsPool.upsert({
-    where: {
-      id: "main-pool"
-    },
-    update: {},
-    create: {
-      id: "main-pool"
-    }
-  })
-
-  for (const question of questions) {
-    await prisma.question.upsert({
-      where: {
-        id: question.id
-      },
-      update: {},
-      create: {
-        id: question.id,
-        questionText: question.questionText,
-        variant1: question.variant1,
-        variant2: question.variant2,
-        variant3: question.variant3,
-        correctVariantIndex: question.correctVariantIndex,
-        questionsPoolId: question.questionsPoolId
-      }
-    })
-  }
+	for (let option of questionsOptions) {
+		await prisma.questionOption.upsert({
+			where: {
+				id: option.id,
+			},
+			update: {},
+			create: {
+				id: option.id,
+				text: option.text,
+				isCorrect: option.isCorrect,
+				questionId: option.questionId,
+				index: option.index
+			}
+		})
+	}
 
 }
 
