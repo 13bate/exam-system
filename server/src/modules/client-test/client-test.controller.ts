@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
-import { createClientTest, findAllClientTest, findByIdClientTest } from "./clientTest.servie.ts";
+import { createClientTest, findAllClientTest, findByIdClientTest } from "./client-test.servie.ts";
 import { AppError } from "../../utils/AppError.ts";
-import { ClientTestSchema } from "./clientTest.schema.ts";
+import { ClientTestSchema } from "./client-test.schema.ts";
 
 
 export const getAllClientTestsController = async (req: Request, res: Response) => {

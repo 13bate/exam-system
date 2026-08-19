@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createClientTestController, getAllClientTestsController, getClientTestById } from "./clientTest.controller.ts";
+import { createClientTestController, getAllClientTestsController, getClientTestById } from "./client-test.controller.ts";
 
 
 export const clientTestRouter = Router();
