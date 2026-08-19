@@ -1,16 +1,7 @@
 import type { Request, Response } from "express"
 import { createClientTest, findAllClientTest, findByIdClientTest } from "./clientTest.servie.ts";
-import * as z from "zod"
 import { AppError } from "../../utils/AppError.ts";
-
-const ClientTestScheme = z.object({
-  userId: z.string(),
-  exercise1: z.boolean(),
-  exercise2: z.boolean(),
-  exercise3: z.boolean(),
-  result: z.boolean(),
-  typeOfCheck: z.literal("начальная").or(z.literal("переодическая"))
-})
+import { ClientTestSchema } from "./clientTest.schema.ts";
 
 
 export const getAllClientTestsController = async (req: Request, res: Response) => {
@@ -29,7 +20,7 @@ export const getClientTestById = async (req: Request, res: Response) => {
 
 export const createClientTestController = async (req: Request, res: Response) => {
   const data = req.body;
-  const dataValidation = ClientTestScheme.safeParse(data)
+  const dataValidation = ClientTestSchema.safeParse(data)
   if (!dataValidation.success) {
     throw new AppError(dataValidation.error.message, 422)
   }
@@ -38,5 +29,6 @@ export const createClientTestController = async (req: Request, res: Response) =>
 
   res.status(201).json(clientTest)
 }
+
 
 

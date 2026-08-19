@@ -107,9 +107,8 @@ model TestAnswer {
   id                   String         @id @default(cuid())
   testAttemptId        String
   questionId           String
-  selectedVariantIndex Int
-  isCorrect            Boolean
   questionOptionId     String
+
   // Relations
   testAttempt          TestAttempt    @relation(fields: [testAttemptId], references: [id])
   question             Question       @relation(fields: [questionId], references: [id])
