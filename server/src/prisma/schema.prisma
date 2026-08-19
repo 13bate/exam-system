@@ -74,10 +74,10 @@ model ClientTest {
   id              String   @id @default(cuid())
   userId          String
   date            DateTime @default(now())
-  exercise1       Boolean
-  exercise2       Boolean
-  exercise3       Boolean
-  result          Boolean
+  exercise1       Boolean?
+  exercise2       Boolean?
+  exercise3       Boolean?
+  result          Boolean?
   typeOfCheck     String
   allowedMistakes Int ?  @default(1)
 

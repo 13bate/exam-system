@@ -1,6 +1,8 @@
 import { prisma } from '../config/prisma.ts'
-import { questions } from '../prisma-data/questions.ts'
-import { questionsOptions } from "../prisma-data/questionOptions.ts"
+import { questionsOptions } from '../prisma-data/question-options.ts';
+import { questions } from '../prisma-data/question.ts'
+
+
 const seed = async () => {
 	await prisma.questionsPool.upsert({
 		where: {

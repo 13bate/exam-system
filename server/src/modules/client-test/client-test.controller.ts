@@ -1,7 +1,8 @@
 import type { Request, Response } from "express"
-import { createClientTest, findAllClientTest, findByIdClientTest } from "./client-test.servie.ts";
+import { createClientTest, findAllClientTest, findByIdClientTest, updateClientTest } from "./client-test.servie.ts";
 import { AppError } from "../../utils/AppError.ts";
-import { ClientTestSchema } from "./client-test.schema.ts";
+import { CreateClientTestSchema, UpdateClientTestSchema } from "./client-test.schema.ts";
+import { Prisma } from "../../generated/prisma/client.ts";
 
 
 export const getAllClientTestsController = async (req: Request, res: Response) => {
@@ -20,7 +21,8 @@ export const getClientTestById = async (req: Request, res: Response) => {
 
 export const createClientTestController = async (req: Request, res: Response) => {
   const data = req.body;
-  const dataValidation = ClientTestSchema.safeParse(data)
+  const dataValidation = CreateClientTestSchema.safeParse(data);
+
   if (!dataValidation.success) {
     throw new AppError(dataValidation.error.message, 422)
   }
@@ -31,4 +33,17 @@ export const createClientTestController = async (req: Request, res: Response) =>
 }
 
 
+export const updateClientTestController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const data = req.body;
+  const dataValidation = UpdateClientTestSchema.safeParse(data);
+
+  if (!dataValidation.success) {
+    throw new AppError(dataValidation.error.message, 401);
+  }
+
+  const clientTest = updateClientTest(String(id), data)
+
+  res.status(201).json(clientTest)
+}
 

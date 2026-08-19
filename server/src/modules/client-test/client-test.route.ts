@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createClientTestController, getAllClientTestsController, getClientTestById } from "./client-test.controller.ts";
+import { createClientTestController, getAllClientTestsController, getClientTestById, updateClientTestController } from "./client-test.controller.ts";
+
 
 
 export const clientTestRouter = Router();
@@ -9,3 +10,4 @@ export const clientTestRouter = Router();
 clientTestRouter.get("/", getAllClientTestsController);
 clientTestRouter.get("/:id", getClientTestById);
 clientTestRouter.post("/", createClientTestController);
+clientTestRouter.patch("/:id", updateClientTestController)
