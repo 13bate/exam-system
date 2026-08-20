@@ -10,6 +10,7 @@ import { testAttemptRouter } from './modules/test-attempt/test-attempt.route.ts'
 import { testAnswerRouter } from './modules/test-answer/test-answer-route.ts';
 import { clientTestRouter } from './modules/client-test/client-test.route.ts';
 import protocolRouter from './modules/protocol/protocol.route.ts';
+import protocolRecordRouter from './modules/protocol-record/protocol-record.route.ts';
 
 const app: Express = express();
 
@@ -29,6 +30,7 @@ app.use("/client-test", clientTestRouter)
 app.use("/test-attempt", testAttemptRouter)
 app.use("/test-answer", testAnswerRouter)
 app.use("/protocol", protocolRouter)
+app.use("/protocol-records", protocolRecordRouter);
 
 app.use(errorMiddleware)
 
