@@ -47,13 +47,8 @@ export const createTestAnswer = async (testAttemptId: string, data: TTestAnswer)
     throw new AppError("Test is already finished", 400)
   }
 
-  const clientTest = await prisma.clientTest.findUnique({
-    where: {
-      id: attempt.clientTestId
-    }
-  })
 
-  let allowedMistakes = clientTest?.allowedMistakes ?? 1;
+  let allowedMistakes = 1;
 
 
 

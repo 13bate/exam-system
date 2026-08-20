@@ -79,7 +79,6 @@ model ClientTest {
   exercise3       Boolean?
   result          Boolean?
   typeOfCheck     String
-  allowedMistakes Int ?  @default(1)
 
   // Relations
   user     User          @relation(fields: [userId], references: [id])
