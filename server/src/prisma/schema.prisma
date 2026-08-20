@@ -67,7 +67,7 @@ model User {
 
   // Relations
   clientTests          ClientTest[]
-  protocolParticipants ProtocolParticipant[]
+  ProtocolRecords ProtocolRecord[]
 }
 
 model ClientTest {
@@ -154,14 +154,15 @@ model QuestionsPool {
 
 model Protocol {
   id          String   @id @default(cuid())
-  date        DateTime
-  typeOfCheck String
+  date        DateTime @default(now())
+  place       String
+  commission  String
 
   // Relations
-  participants ProtocolParticipant[]
+  records ProtocolRecord[]
 }
 
-model ProtocolParticipant {
+model ProtocolRecord {
   id             String   @id @default(cuid())
   protocolId     String
   userId         String
