@@ -91,10 +91,10 @@ model ClientTest {
 model TestAttempt {
   id           String   @id @default(cuid())
   clientTestId String   @unique
-  startedAt    DateTime
-  finishedAt   DateTime?
-  mistakes     Int
-  passed       Boolean
+  startedAt    DateTime @default(now())
+  mistakes     Int?       
+  passed       Boolean? 
+  isFinished   Boolean  @default(false)
 
   // Relations
   clientTest ClientTest?   @relation(fields: [clientTestId], references: [id])

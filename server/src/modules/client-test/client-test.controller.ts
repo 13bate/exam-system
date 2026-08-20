@@ -2,7 +2,7 @@ import type { Request, Response } from "express"
 import { createClientTest, findAllClientTest, findByIdClientTest, updateClientTest } from "./client-test.servie.ts";
 import { AppError } from "../../utils/AppError.ts";
 import { CreateClientTestSchema, UpdateClientTestSchema } from "./client-test.schema.ts";
-import { Prisma } from "../../generated/prisma/client.ts";
+
 
 
 export const getAllClientTestsController = async (req: Request, res: Response) => {
@@ -42,7 +42,7 @@ export const updateClientTestController = async (req: Request, res: Response) =>
     throw new AppError(dataValidation.error.message, 401);
   }
 
-  const clientTest = updateClientTest(String(id), data)
+  const clientTest = await updateClientTest(String(id), data)
 
   res.status(201).json(clientTest)
 }

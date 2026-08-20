@@ -8,7 +8,7 @@ export const testAnswerRouter = Router()
 
 
 
-testAnswerRouter.get("/test-answer", getTestAnswerController);
-testAnswerRouter.get("/test-answer/:id", getTestAnswerByIdController);
+testAnswerRouter.get("/", getTestAnswerController);
+testAnswerRouter.get("/:id", getTestAnswerByIdController);
 
-testAnswerRouter.post("/test-answer", createTestAnswerController)
+testAnswerRouter.post("/:testAttemptId", createTestAnswerController)

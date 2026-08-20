@@ -1,13 +1,9 @@
 import type { Request, Response } from "express"
 import { createTestAttempt, findAllTestAttempt, findTesAttemptById } from "./test-attempt.service.ts";
-import * as z from "zod"
 import { AppError } from "../../utils/AppError.ts";
+import { CreateTestAttemptSchema } from "./test-attempt.schema.ts";
 
-const TestAttemptScheme = z.object({
-  clientTestId: z.string(),
-  mistakes: z.number(),
-  passed: z.boolean()
-})
+
 
 
 export const getAllTestAttemptController = async (req: Request, res: Response) => {
@@ -25,7 +21,7 @@ export const getTestAttemptByIDController = async (req: Request, res: Response) 
 
 export const createTestAttemptController = async (req: Request, res: Response) => {
   const data = req.body;
-  const validateData = TestAttemptScheme.safeParse(data);
+  const validateData = CreateTestAttemptSchema.safeParse(data);
 
   if (!validateData.success) {
     throw new AppError(validateData.error.message, 401)

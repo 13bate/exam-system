@@ -1,11 +1,9 @@
 import * as z from "zod"
 
-export const TestAnswerSchmema = z.object({
-  id: z.string(),
-  testAttemptId: z.string(),
+export const CreateTestAnswerSchema = z.object({
   questionId: z.string(),
   questionOptionId: z.string(),
 })
 
 
-export type ITestAnswer = z.infer<typeof TestAnswerSchmema>
+export type TTestAnswer = z.infer<typeof CreateTestAnswerSchema>

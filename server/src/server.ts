@@ -5,9 +5,10 @@ import { questionsRouter } from './modules/questions/questions.route.ts';
 import { authRouter } from './modules/auth/auth.route.ts';
 import { authMiddleware } from './middlewares/auth.middlewares.ts';
 import { errorMiddleware } from './middlewares/error.middleware.ts';
-import { clientTestRouter } from './modules/client-test/client-test.route.ts';
+
 import { testAttemptRouter } from './modules/test-attempt/test-attempt.route.ts';
 import { testAnswerRouter } from './modules/test-answer/test-answer-route.ts';
+import { clientTestRouter } from './modules/client-test/client-test.route.ts';
 
 const app: Express = express();
 
@@ -25,7 +26,7 @@ app.use("/question", authMiddleware, questionsRouter)
 app.use("/auth", authRouter)
 app.use("/client-test", clientTestRouter)
 app.use("/test-attempt", testAttemptRouter)
-app.use("test-answer", testAnswerRouter)
+app.use("/test-answer", testAnswerRouter)
 
 app.use(errorMiddleware)
 

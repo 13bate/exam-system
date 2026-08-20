@@ -6,7 +6,6 @@ export const CreateClientTestSchema = z.object({
   exercise1: z.boolean().optional(),
   exercise2: z.boolean().optional(),
   exercise3: z.boolean().optional(),
-  result: z.boolean().optional(),
   typeOfCheck: z.literal("начальная").or(z.literal("переодическая"))
 })
 
@@ -17,7 +16,6 @@ export const UpdateClientTestSchema = z.object({
   exercise1: z.boolean().optional(),
   exercise2: z.boolean().optional(),
   exercise3: z.boolean().optional(),
-  result: z.boolean().optional(),
   typeOfCheck: z.literal("начальная").or(z.literal("переодическая")).optional()
 }).refine(
   (data) => Object.keys(data).length > 0,

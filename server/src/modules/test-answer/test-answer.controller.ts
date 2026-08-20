@@ -1,8 +1,8 @@
 import type { Request, Response } from "express"
 import { createTestAnswer, findAllTestAnswer } from "./test-answer.service.ts";
 import { findTesAttemptById } from "../test-attempt/test-attempt.service.ts";
-import { TestAnswerSchmema } from "./test-answer.schema.ts";
 import { AppError } from "../../utils/AppError.ts";
+import { CreateTestAnswerSchema } from "./test-answer.schema.ts";
 
 
 
@@ -25,13 +25,15 @@ export const getTestAnswerByIdController = async (req: Request, res: Response) =
 
 export const createTestAnswerController = async (req: Request, res: Response) => {
   const data = req.body;
-  const validatedData = TestAnswerSchmema.safeParse(data);
+  const { testAttemptId } = req.params
+  const validatedData = CreateTestAnswerSchema.safeParse(data);
 
   if (!validatedData.success) {
     throw new AppError(validatedData.error.message, 401);
   }
 
-  const testAnswer = await createTestAnswer(data);
+  const testAnswer = await createTestAnswer(String(testAttemptId), data);
 
   res.status(201).json(testAnswer);
 }
+
